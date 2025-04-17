@@ -1,0 +1,12 @@
+{
+	"extends": [
+		"plugin:@maxencebonamy/base",
+		"plugin:@maxencebonamy/typescript"
+	],
+	"ignorePatterns": [
+		"node_modules"
+	],
+	"rules": {
+		"@stylistic/max-len": [ "warn", { "code": 150,  "ignorePattern": "import\\s+(?:type\\s+)?\\{[^}]*\\}\\s+from\\s+\"[^\"]*\""} ]
+	}
+}
