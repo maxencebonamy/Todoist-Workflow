@@ -15,7 +15,7 @@ export const startServer = async (): Promise<FastifyInstance> => {
 		await reply.code(200).send({ status: "ok" })
 	})
 
-	fastify.listen({ port: 3000 }, (err, address) => {
+	fastify.listen({ port: 3000, host: "0.0.0.0" }, (err, address) => {
 		if (err) throw err
 		logger.debug(`Server listening at ${address}`)
 	})
