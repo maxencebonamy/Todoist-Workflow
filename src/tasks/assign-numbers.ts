@@ -1,9 +1,18 @@
 import { logger } from "#/lib/logger"
 import type { Ticket } from "#/lib/todoist"
-import { getTicketsFromProject, updateTicketContent } from "#/lib/todoist"
+import { getTicketsFromProject, removeTicketTag, updateTicketContent } from "#/lib/todoist"
 import type { Project } from "@doist/todoist-api-typescript/dist"
 
-const NUMBER_REGEX = /\[\d{4}\]/
+const NUMBER_REGEX = /`[^/`]+\/\d{4}`/
+
+const getTicketType = (ticket: Ticket): string | null => {
+	for (const label of ticket.labels) {
+		if ([ "bugfix", "feature", "refactor" ].includes(label)) {
+			return label
+		}
+	}
+	return null
+}
 
 export const assignNumbersTask = async (project: Project): Promise<void> => {
 	const tickets = await getTicketsFromProject(project)
@@ -13,7 +22,7 @@ export const assignNumbersTask = async (project: Project): Promise<void> => {
 	for (const ticket of tickets) {
 		const match = ticket.content.match(NUMBER_REGEX)
 		if (match) {
-			const id = parseInt(match[0].replace(/\[|\]/g, ""))
+			const id = parseInt(match[0].replace(/`.*\//, "").replace(/`/g, ""))
 			if (id > maxId) {
 				maxId = id
 			}
@@ -24,8 +33,14 @@ export const assignNumbersTask = async (project: Project): Promise<void> => {
 
 	for (const ticket of ticketsToNumber) {
 		maxId++
-		const newContent = `[${maxId.toString().padStart(4, "0")}] ${ticket.content}`
+		const ticketType = getTicketType(ticket)
+		if (!ticketType) {
+			logger.warn(`Ticket ${ticket.content} does not have a valid type. Skipping...`)
+			continue
+		}
+		const newContent = `\`${ticketType}/${maxId.toString().padStart(4, "0")}\` ${ticket.content}`
 		await updateTicketContent(ticket, newContent)
+		await removeTicketTag(ticket, ticketType)
 	}
 
 	logger.debug(`Assigned numbers to ${ticketsToNumber.length} tickets`)

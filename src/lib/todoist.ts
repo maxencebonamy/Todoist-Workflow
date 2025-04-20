@@ -40,3 +40,8 @@ export const updateTicketContent = async (ticket: Ticket, content: string): Prom
 	await api.updateTask(ticket.id, { content })
 	logger.debug(`Updated ticket from "${ticket.content}" to "${content}"`)
 }
+
+export const removeTicketTag = async (ticket: Ticket, tag: string): Promise<void> => {
+	await api.updateTask(ticket.id, { labels: ticket.labels.filter(l => l !== tag) })
+	logger.debug(`Removed tag "${tag}" from ticket "${ticket.content}"`)
+}
