@@ -8,6 +8,11 @@ export const env = createEnv(process.env, z.object({
 
 	// Todoist
 	TODOIST_API_KEY: z.string(),
-	TODOIST_PROJECT_NAME: z.string()
+	TODOIST_PROJECT_NAME: z.string(),
+
+	// Server
+	SERVER_PORT: z.coerce.number(),
+	TLS_KEY_PATH: z.string(),
+	TLS_CERT_PATH: z.string()
 
 }))
