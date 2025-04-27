@@ -5,8 +5,7 @@
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
 	"scripts": {
-		"dev": "tsx --watch src/index.ts",
-		"build": "tsup"
+		"start": "tsx --watch src/index.ts"
 	},
 	"dependencies": {
 		"@doist/todoist-api-typescript": "^4.0.1",

@@ -1,0 +1,6 @@
+node_modules
+certs
+.git
+.gitignore
+.env
+.DS_Store
