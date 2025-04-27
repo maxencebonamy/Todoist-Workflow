@@ -48,8 +48,8 @@ export const register = (fastify: FastifyInstance): void => {
 
 		const project = await getProjectByName(env.TODOIST_PROJECT_NAME)
 		if (parsedBody.data.projectId !== project.id) {
-			logger.error("Invalid project ID", parsedBody.data.projectId)
-			await reply.status(400).send("Invalid project ID")
+			logger.debug("Invalid project ID", parsedBody.data.projectId)
+			await reply.status(200).send({ status: "ok" })
 			return
 		}
 
@@ -78,6 +78,6 @@ export const register = (fastify: FastifyInstance): void => {
 		await updateTicketContent(parsedBody.data, newContent)
 		await removeTicketTag(parsedBody.data, ticketType)
 
-		await reply.code(200).send({ status: "ok" })
+		await reply.code(200).send({ status: "updated" })
 	})
 }
