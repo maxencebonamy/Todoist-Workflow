@@ -36,12 +36,12 @@ export const getTicketsFromProject = async (project: Project): Promise<Ticket[]>
 	return tickets
 }
 
-export const updateTicketContent = async (ticket: Ticket, content: string): Promise<void> => {
+export const updateTicketContent = async (ticket: Pick<Ticket, "id" | "content">, content: string): Promise<void> => {
 	await api.updateTask(ticket.id, { content })
 	logger.debug(`Updated ticket from "${ticket.content}" to "${content}"`)
 }
 
-export const removeTicketTag = async (ticket: Ticket, tag: string): Promise<void> => {
+export const removeTicketTag = async (ticket: Pick<Ticket, "id" | "content" | "labels">, tag: string): Promise<void> => {
 	await api.updateTask(ticket.id, { labels: ticket.labels.filter(l => l !== tag) })
 	logger.debug(`Removed tag "${tag}" from ticket "${ticket.content}"`)
 }

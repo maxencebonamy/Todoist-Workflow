@@ -3,16 +3,19 @@ import { z } from "zod"
 
 export const env = createEnv(process.env, z.object({
 
-	// Logs
 	LOG_LEVEL: z.enum([ "DEBUG", "INFO", "WARN", "ERROR", "FATAL", "OFF" ]),
 
-	// Todoist
 	TODOIST_API_KEY: z.string(),
 	TODOIST_PROJECT_NAME: z.string(),
+	TODOIST_CLIENT_ID: z.string(),
+	TODOIST_CLIENT_SECRET: z.string(),
 
-	// Server
+	SERVER_HOST: z.string(),
 	SERVER_PORT: z.coerce.number(),
+	SERVER_URL: z.string().url(),
+
 	TLS_KEY_PATH: z.string(),
-	TLS_CERT_PATH: z.string()
+	TLS_CERT_PATH: z.string(),
+	TLS_CA_PATH: z.string().optional()
 
 }))
